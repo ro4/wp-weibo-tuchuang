@@ -28,14 +28,19 @@ Author URI: thefrp.sinaapp.com
 
 function add_weibo_button($context){
 	$img = plugins_url( '/images/post.button.png' , __FILE__ );
-  	$container_id = 'huge_it_slider';
+  	$container_id = 'weibo';
+  	$context .= '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script>
+$(document).ready(function(){
+$("a.button").click(function(){
 
-   	$title = '选择图片/seletct img';
-
-  	$context .= '<a class="button thickbox" title="'.$title.'" href="?page=weibo_select_img">
-		<span class="wp-media-buttons-icon" style="background: url('.$img.'); background-repeat: no-repeat; background-position: left bottom;"></span>
-		微博图片
-		</a>';
+});
+});
+</script>'.
+'<a class="button">
+    <span class="wp-media-buttons-icon" style="background: url('.$img.'); background-repeat: no-repeat; background-position: left bottom;"></span>
+  微博图片
+  </a>';
   
   	return $context;
 }
@@ -55,11 +60,16 @@ function sina_weibo_options() {
           wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
      }
      echo '<div class="wrap">';
-     echo '<p>Here is where the form would go if I actually had options.</p>';
+     echo '<p>插件选项.</p>';
      echo '</div>';
 }
-
-function weibo_select_img(){
-  header('baidu.com');
+function add_shortcode_post(){
+   echo 'hi';
 }
+function weibo_select_img(){
+   if ('add_shortcode_post' == $_GET['task']){
+    add_shortcode_post();
+   }
+}
+
 ?>
