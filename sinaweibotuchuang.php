@@ -28,19 +28,68 @@ Author URI: thefrp.sinaapp.com
 
 function add_weibo_button($context){
 	$img = plugins_url( '/images/post.button.png' , __FILE__ );
-  	$container_id = 'weibo';
-  	$context .= '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-    <script>
-$(document).ready(function(){
-$("a.button").click(function(){
+  $jquery = plugins_url('/js/jquery.js', __FILE__);
+  $ajaxfileupload = plugins_url('/js/ajaxfileupload.js', __FILE__);
+  $loading = plugins_url( '/images/loading.gif' , __FILE__ );
+  $upload = plugins_url('doajaxfileupload.php', __FILE__);
+  $context .= '<script type="text/javascript" src="'.$jquery.'"></script>
+  <script type="text/javascript" src="'.$ajaxfileupload.'"></script>
+  <script type="text/javascript">
+  function ajaxFileUpload()
+  {
+    $("#loading")
+    .ajaxStart(function(){
+      $(this).show();
+    })
+    .ajaxComplete(function(){
+      $(this).hide();
+    });
 
-});
-});
-</script>'.
-'<a class="button">
-    <span class="wp-media-buttons-icon" style="background: url('.$img.'); background-repeat: no-repeat; background-position: left bottom;"></span>
-  微博图片
-  </a>';
+    $.ajaxFileUpload
+    (
+      {
+        url:\'http://t.tt/doajaxfileupload.php\',
+        secureuri:false,
+        fileElementId:\'fileToUpload\',
+        dataType: \'json\',
+        data:{name:\'logan\', id:\'id\'},
+        success: function (data, status)
+        {
+          if(typeof(data.error) != \'undefined\')
+          {
+            if(data.error != \'\')
+            {
+              alert(data.msg);
+            }else
+            {
+              alert(data.msg);
+            }
+          }
+        },
+        error: function (data, status, e)
+        {
+          alert(e);
+        }
+      }
+    )
+    return false;
+  }
+  </script> <img id="loading" src="'.$loading.'" style="display:none;">
+    <form name="form" action="" method="POST" enctype="multipart/form-data">
+    <table cellpadding="0" cellspacing="0" class="tableForm">
+    <tbody> 
+      <tr>
+        <td><input id="fileToUpload" type="file" size="45" name="fileToUpload" class="input"></td>      </tr>
+
+    </tbody>
+      <tfoot>
+        <tr>
+          <td><button onclick="return ajaxFileUpload();">上传</button></td>
+        </tr>
+      </tfoot>
+  
+  </table>
+    </form>';
   
   	return $context;
 }
